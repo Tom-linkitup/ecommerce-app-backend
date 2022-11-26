@@ -1,7 +1,9 @@
 package com.example.springbootecommerce.config;
 
+import com.example.springbootecommerce.entity.Country;
 import com.example.springbootecommerce.entity.Product;
 import com.example.springbootecommerce.entity.ProductCategory;
+import com.example.springbootecommerce.entity.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -30,18 +32,20 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
         HttpMethod[] unSupportedMethods = {HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE};
 
-        config.getExposureConfiguration()
-                .forDomainType(Product.class)
-                .withItemExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportedMethods)))
-                .withCollectionExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportedMethods)));
-
-        config.getExposureConfiguration()
-                .forDomainType(ProductCategory.class)
-                .withItemExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportedMethods)))
-                .withCollectionExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportedMethods)));
+        disableHttpMethods(Product.class, config, unSupportedMethods);
+        disableHttpMethods(ProductCategory.class, config, unSupportedMethods);
+        disableHttpMethods(Country.class, config, unSupportedMethods);
+        disableHttpMethods(State.class, config, unSupportedMethods);
 
         // call an internal helper method
         exposeIds(config);
+    }
+
+    private void disableHttpMethods(Class theClass, RepositoryRestConfiguration config, HttpMethod[] unSupportedMethods) {
+        config.getExposureConfiguration()
+                .forDomainType(theClass)
+                .withItemExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportedMethods)))
+                .withCollectionExposure(((metdata, httpMethods) -> httpMethods.disable(unSupportedMethods)));
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {
