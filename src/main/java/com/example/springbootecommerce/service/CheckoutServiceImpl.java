@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -44,6 +45,12 @@ public class CheckoutServiceImpl implements CheckoutService{
 
         // populate customer
         Customer customer = purchase.getCustomer();
+        // check if duplicate email
+        String email = customer.getEmail();
+        Customer customerFromDb = customerRepository.findByEmail(email);
+        if (Objects.nonNull(customerFromDb)) {
+            customer = customerFromDb;
+        }
         customer.add(order);
 
         // save to db

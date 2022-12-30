@@ -1,9 +1,6 @@
 package com.example.springbootecommerce.config;
 
-import com.example.springbootecommerce.entity.Country;
-import com.example.springbootecommerce.entity.Product;
-import com.example.springbootecommerce.entity.ProductCategory;
-import com.example.springbootecommerce.entity.State;
+import com.example.springbootecommerce.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -30,12 +27,13 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
 
-        HttpMethod[] unSupportedMethods = {HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE};
+        HttpMethod[] unSupportedMethods = {HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE, HttpMethod.PATCH};
 
         disableHttpMethods(Product.class, config, unSupportedMethods);
         disableHttpMethods(ProductCategory.class, config, unSupportedMethods);
         disableHttpMethods(Country.class, config, unSupportedMethods);
         disableHttpMethods(State.class, config, unSupportedMethods);
+        disableHttpMethods(Order.class, config, unSupportedMethods);
 
         // call an internal helper method
         exposeIds(config);
