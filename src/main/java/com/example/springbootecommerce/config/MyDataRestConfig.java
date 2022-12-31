@@ -1,7 +1,6 @@
 package com.example.springbootecommerce.config;
 
 import com.example.springbootecommerce.entity.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -9,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.metamodel.EntityType;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,8 @@ import java.util.Set;
 @Configuration
 public class MyDataRestConfig implements RepositoryRestConfigurer {
 
+    @PersistenceContext
     private EntityManager entityManager;
-
-    @Autowired
-    public MyDataRestConfig(EntityManager theEntityManager) {
-        entityManager = theEntityManager;
-    }
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
